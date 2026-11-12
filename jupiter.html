@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Júpiter: El Gigante de las Tormentas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #07080f;
+            --bg-card: rgba(20, 24, 41, 0.75);
+            --accent-orange: #e06d3b;
+            --accent-gold: #f4b350;
+            --accent-blue: #4ea8de;
+            --text-main: #f0f2f8;
+            --text-muted: #a0a8c0;
+            --border-glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(7, 8, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glass);
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-orange);
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        #inicio {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6rem 8% 3rem;
+            gap: 3rem;
+            background: radial-gradient(circle at 75% 50%, rgba(224, 109, 59, 0.15), transparent 60%);
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(224, 109, 59, 0.2);
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-orange);
+            padding: 0.3rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.2rem;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            color: var(--accent-orange);
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-orange), #b84318);
+            color: white;
+            text-decoration: none;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(224, 109, 59, 0.35);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(224, 109, 59, 0.5);
+        }
+
+        .jupiter-visual {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: repeating-linear-gradient(
+                -15deg,
+                #d8ca9d 0px,
+                #d8ca9d 25px,
+                #c99039 25px,
+                #c99039 50px,
+                #a55c31 50px,
+                #a55c31 75px,
+                #e3dccb 75px,
+                #e3dccb 95px,
+                #8f4722 95px,
+                #8f4722 115px
+            );
+            box-shadow: 
+                inset -45px -30px 60px rgba(0, 0, 0, 0.85),
+                inset 15px 15px 40px rgba(255, 230, 190, 0.3),
+                0 0 60px rgba(224, 109, 59, 0.25);
+            animation: floatPlanet 6s ease-in-out infinite;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .great-red-spot-css {
+            position: absolute;
+            width: 85px;
+            height: 55px;
+            background: radial-gradient(ellipse at center, #a82410 0%, #d94e28 60%, #e89b6b 100%);
+            border-radius: 50%;
+            top: 62%;
+            left: 48%;
+            transform: rotate(-15deg);
+            box-shadow: 0 0 15px rgba(168, 36, 16, 0.8);
+            border: 3px solid rgba(240, 220, 190, 0.4);
+        }
+
+        @keyframes floatPlanet {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        section {
+            padding: 6rem 8%;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-gold);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-orange);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .stat-highlight {
+            display: block;
+            margin-top: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--accent-orange);
+            font-size: 1.1rem;
+        }
+
+        #mapa {
+            background: rgba(12, 15, 28, 0.7);
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .map-container {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .jupiter-map-board {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2px solid rgba(244, 179, 80, 0.3);
+            background: linear-gradient(
+                180deg,
+                #2b3a55 0%,
+                #5c6b73 12%,
+                #d8ca9d 22%,
+                #9e522b 35%,
+                #e6dec8 48%,
+                #c46b33 62%,
+                #d8ca9d 76%,
+                #6e7f80 88%,
+                #223344 100%
+            );
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+        }
+
+        .grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.12) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.12) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .hotspot {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: var(--accent-orange);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 0 0 rgba(224, 109, 59, 0.8);
+            animation: pulsePin 2s infinite;
+            transition: transform 0.2s, background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        .hotspot:hover, .hotspot.active {
+            transform: translate(-50%, -50%) scale(1.25);
+            background: var(--accent-blue);
+            z-index: 10;
+        }
+
+        @keyframes pulsePin {
+            0% { box-shadow: 0 0 0 0 rgba(224, 109, 59, 0.8); }
+            70% { box-shadow: 0 0 0 15px rgba(224, 109, 59, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(224, 109, 59, 0); }
+        }
+
+        .map-info-panel {
+            padding: 1.5rem;
+            background: rgba(7, 8, 15, 0.6);
+            border-radius: 14px;
+            border-left: 4px solid var(--accent-orange);
+        }
+
+        .coords-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .map-info-panel h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .map-info-panel p {
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .storm-specs {
+            list-style: none;
+            border-top: 1px solid var(--border-glass);
+            padding-top: 1rem;
+        }
+
+        .storm-specs li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .storm-specs strong {
+            color: var(--text-main);
+        }
+
+        .contact-wrapper {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: rgba(7, 8, 15, 0.8);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+
+        .btn-submit {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #form-feedback {
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: #4ade80;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 900px) {
+            #inicio {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 8rem;
+            }
+            .jupiter-visual {
+                width: 270px;
+                height: 270px;
+            }
+            .map-container {
+                grid-template-columns: 1fr;
+            }
+            nav ul {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">JÚPITER // STORM</div>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#curiosidades">Curiosidades</a></li>
+                <li><a href="#mapa">Mapa Atmosférico</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio">
+        <div class="hero-text">
+            <span class="badge">OBSERVATORIO PLANETARIO</span>
+            <h1>Las Tormentas Gigantes de <span>Júpiter</span></h1>
+            <p>
+                Explora el clima más extremo del Sistema Solar. Desde anticiclones colosales que superan el tamaño de la Tierra hasta ciclones polares geométricos impulsados por vientos supersónicos.
+            </p>
+            <a href="#mapa" class="btn-primary">Explorar Mapa de Tormentas</a>
+        </div>
+
+        <div class="jupiter-visual" title="Representación de Júpiter y la Gran Mancha Roja">
+            <div class="great-red-spot-css"></div>
+        </div>
+    </section>
+
+    <section id="curiosidades">
+        <div class="section-header">
+            <h2>Curiosidades Meteorológicas</h2>
+            <p>Fenómenos atmosféricos que desafían todo lo que conocemos sobre el clima terrestre.</p>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">🌪️</div>
+                <h3>La Gran Mancha Roja</h3>
+                <p>Es un anticiclón monstruoso que lleva activo al menos desde el siglo XVII. Su color rojizo proviene de compuestos químicos complejos que reaccionan con la radiación ultravioleta del Sol.</p>
+                <span class="stat-highlight">Vientos de hasta 432 km/h</span>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🌍</div>
+                <h3>Escala Colosal</h3>
+                <p>Aunque la Gran Mancha Roja se ha ido encogiendo lentamente en las últimas décadas, sigue siendo tan ancha que nuestro planeta entero cabría cómodamente dentro de su vórtice.</p>
+                <span class="stat-highlight">~16,350 km de diámetro</span>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">❄️</div>
+                <h3>Ciclones Polares Geométricos</h3>
+                <p>La sonda Juno de la NASA descubrió que en el polo norte de Júpiter hay un ciclón central rodeado por otros ocho ciclones formando un octágono casi perfecto.</p>
+                <span class="stat-highlight">Formación de 9 ciclones</span>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Relámpagos de Amoníaco</h3>
+                <p>En las capas altas y heladas de la atmósfera, los cristales de hielo de agua chocan con vapores de amoníaco creando "granizo blando" y relámpagos mucho más potentes que los terrestres.</p>
+                <span class="stat-highlight">Hasta 10 veces más energía</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="mapa">
+        <div class="section-header">
+            <h2>Mapa Atmosférico Interactivo</h2>
+            <p>Haz clic en los puntos numerados sobre la atmósfera de Júpiter para analizar cada sistema de tormentas.</p>
+        </div>
+
+        <div class="map-container">
+            <div class="jupiter-map-board">
+                <div class="grid-lines"></div>
+                
+                <div class="hotspot" style="top: 10%; left: 50%;" onclick="seleccionarTormenta(0, this)">1</div>
+                
+                <div class="hotspot" style="top: 35%; left: 32%;" onclick="seleccionarTormenta(1, this)">2</div>
+                
+                <div class="hotspot active" style="top: 62%; left: 58%;" onclick="seleccionarTormenta(2, this)">3</div>
+                
+                <div class="hotspot" style="top: 75%; left: 28%;" onclick="seleccionarTormenta(3, this)">4</div>
+                
+                <div class="hotspot" style="top: 90%; left: 68%;" onclick="seleccionarTormenta(4, this)">5</div>
+            </div>
+
+            <div class="map-info-panel" id="panel-tormenta">
+                <span class="coords-tag" id="t-coords">LATITUD: 22° SUR // HEMISFERIO SUR</span>
+                <h3 id="t-titulo">La Gran Mancha Roja</h3>
+                <p id="t-desc">
+                    El sistema tormentoso más famoso del Sistema Solar. Al ser un anticiclón en el hemisferio sur, gira en sentido contrario a las agujas del reloj, completando una rotación cada 4 a 6 días terrestres.
+                </p>
+                <ul class="storm-specs">
+                    <li><strong>Tipo de sistema:</strong> <span id="t-tipo">Anticiclón persistente</span></li>
+                    <li><strong>Velocidad del viento:</strong> <span id="t-viento">432 - 680 km/h en los bordes</span></li>
+                    <li><strong>Profundidad estimada:</strong> <span id="t-prof">300 a 500 km bajo las nubes</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto">
+        <div class="section-header">
+            <h2>Contacto & Reporte Astronómico</h2>
+            <p>¿Tienes dudas sobre astrofísica o quieres compartir tus observaciones con telescopio?</p>
+        </div>
+
+        <div class="contact-wrapper">
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Carl Sagan" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="astronomia@ejemplo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mensaje">Mensaje o reporte de observación</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe aquí tu consulta o los detalles de tu observación..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary btn-submit">Enviar Mensaje</button>
+                <div id="form-feedback"></div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Observatorio Planetario Júpiter // Storm. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
